@@ -14,9 +14,14 @@ This is tested on Debian 10 and should work anywhere with OpenSMTPD > 6.4 with m
 - To prevent cron from spamming you with local emails, append `>/dev/null 2>&1` to each cron job line, or switch to systemd timers.
 - OpenSMTPD is preinstalled on OpenBSD. If using latest Ubuntu or Arch, install it from their repositories. If using Debian 10, we'll enable the buster-backports repository to get a newer version of OpenSMTPD, since the configuration file changed in version 6.4 so it would be wasteful to learn the old syntax when it's already obsolete: `echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list && apt update && apt-get -t buster-backports --no-install-recommends install opensmtpd`
 - You can choose from multiple software that do DKIM signing:<br>
-    - filter-dkimsign is the simplest since it doesn't require a configuration file, being ran as a service or extra runtime dependencies, but it's not in Debian's repos. You can compile it on Debian 10 with `install-filter-dkimsign.sh`. There is a comment at the end of that script with the command to uninstall the dependencies required for compilation if you choose to do so.<br>
+    - DKIMproxy hasn't been updated in 10 years, but still works and is readily available in Debian's repository. Run `apt install dkimproxy`, and append
+    RUN_DKIMPROXY_IN=0
+    DKIM_HOSTNAME=sender_domain.xyz
+    DOMAIN=sender_domain.xyz
+    DKIMPROXY_OUT_MIN_SERVERS=1
+to `/etc/default/dkimproxy` (and also `DKIMPROXY_OUT_PRIVKEY=/etc/dkim_private.key` if you generated your own key). That file is well commented if you want to know what those do. Then, assuming you used "mail" as the DKIM selector, `sed -i s/postfix/mail/ /etc/dkimproxy/dkimproxy_out.conf`. Note that the domain and keyfile path in `/etc/dkimproxy/dkimproxy_out.conf` have no effect. Finally, run `systemctl restart dkimproxy`.<br>
+    - filter-dkimsign is the simplest since it doesn't require a configuration file, being ran as a service or extra runtime dependencies, but I had problems with it crashing when replying to emails with the same message ID domain as the sender (i.e. when replying to yourself on mailing lists and Sourcehut tickets), and it's not in Debian's repos.<br>
     - rspamd is more complex and checking reverse DNS has been enough for me to avoid spam, without having to check if valid emails end up in a spam directory. If you want to use rspamd for more advanced spam filtering anyway, you can use it for DKIM too, though the integration software opensmtpd-filter-rspamd is not in Debian 10's stable or backports repos.<br>
-    - DKIMproxy hasn't been updated in 10 years and has been removed from the Arch repos, the AUR and the OpenSMTPD manpage examples, and has to be configured and run as a service, so it's not an ideal choice.
 - Backup the original `/etc/smtpd.conf` if you want, then download this repo's `smtpd.conf` to `/etc/smtpd.conf`, read the comments and replace the example domains with yours.
 - Ensure your configuration file doesn't have errors with `smtpd -n`.
 - Restart OpenSMTPD. On GNU/Linux, you do this with `systemctl restart opensmtpd`.
