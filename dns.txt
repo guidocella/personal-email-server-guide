@@ -1,0 +1,26 @@
+# Specify your mail server in an MX record.
+# If it's the same as that of the sender address domain you want to use,
+# just write your domain twice;
+# there is no need to create a mail subdomain.
+# 10 is an arbitrary number that determines the priority
+# if you specify multiple mail servers (lower number = higher priority).
+sender_domain.xyz.	86400	IN	MX	10 server_hostname.com.
+
+# The following records improve deliverability.
+
+# Authorize only your mail server to send emails on your behalf.
+sender_domain.xyz.	86400	IN	TXT	"v=spf1 mx -all"
+
+# DKIM is a method to cryptographically sign your emails
+# to prove that they haven't been tampered with in transit.
+# Generate a private key on your mail server with
+# openssl genrsa -out /etc/dkim_private.key
+# then output the public key in the format suitable for this DNS record with
+# openssl rsa -in /etc/dkim_private.key -pubout -outform der 2>/dev/null | openssl base64 -A
+# then use a record like this, replacing the public key after p= with yours.
+# "mail" is the selector which you can call whatever you want.
+mail._domainkey.sender_domain.xyz.	86400	IN	TXT	"v=DKIM1; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+Z7SeOjSgHwmxqimv196rejK1s/FCi0HJcbK5DZ7PgWPDASBKj11UPDEuogKeccPOw2flRHB7kwT+ILb2ffEqAj4vxOfbO1xMJtazTLAUfufoV7CQ6KyuQdafhK52JnRJFbgf7bsiPkq1WNkfQAmH3ygltw02OCdH2bD8N5AQD7T7O/8Jn8dB50cpx+6IX+YnGGnVd2AbpItIeEGV4U94WvOFiscrS27/j7ViSLHixkinfUkCrvZLTEfjdyGVQgiE9RfHHnLshtEbTlr9ZCRViyTgp7JYbX8fUDl0sKx7MbTWv/hrjbLUvSlXOb1YvXKJEy1L58kbO5XOejEBtLIRwIDAQAB"
+
+# Let know that emails from your domain
+# that fail SPF and/or DKIM should be rejected.
+_dmarc.sender_domain.xyz.	86400	IN	TXT	"v=DMARC1; p=reject"
