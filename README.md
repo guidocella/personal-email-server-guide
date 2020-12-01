@@ -11,7 +11,7 @@ This is tested on Debian 10 and should work anywhere with OpenSMTPD > 6.4 with m
 - Set your server's hostname to the domain with TLS. On GNU/Linux, you do this with `hostnamectl set-hostname $domain`.
 - From your VPS panel, set your server's IP address reverse DNS to the server's hostname. This is a must to get good deliverability.
 - Read `dns.txt` to see how to set your DNS records.
-- To prevent cron from spamming you with local emails, append >/dev/null 2>&1 to each cron job line, or switch to systemd timers.
+- To prevent cron from spamming you with local emails, append `>/dev/null 2>&1` to each cron job line, or switch to systemd timers.
 - OpenSMTPD is preinstalled on OpenBSD. If using latest Ubuntu or Arch, install it from their repositories. If using Debian 10, we'll enable the buster-backports repository to get a newer version of OpenSMTPD, since the configuration file changed in version 6.4 so it would be wasteful to learn the old syntax when it's already obsolete: `echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list && apt update && apt-get -t buster-backports --no-install-recommends install opensmtpd`
 - You can choose from multiple software that do DKIM signing:<br>
     - filter-dkimsign is the simplest since it doesn't require a configuration file, being ran as a service or extra runtime dependencies, but it's not in Debian's repos. You can compile it on Debian 10 with `install-filter-dkimsign.sh`. There is a comment at the end of that script with the command to uninstall the dependencies required for compilation if you choose to do so.<br>
