@@ -6,7 +6,7 @@ This is meant to be the simplest possible setup for recieving email only for you
 
 This is tested on Debian 10 and should work anywhere with OpenSMTPD > 6.4 with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd`, the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`, and the filter executables go in `/usr/lib/smtpd/opensmtpd` instead of `/usr/libexec/opensmtpd`.
 
-- Ensure that port 25 is open on your server, or you'll have to ask your VPS provider to open it. If you use zsh, you can open a TCP socket on your server with `zmodload zsh/net/tcp; ztcp -l 25`, and check that you can connect to it with `zmodload zsh/net/tcp; ztcp your_server.com 25`. Otherwise, you can use netcat.
+- Ensure that port 25 is open on your server, or you'll have to ask your VPS provider to open it. If you use zsh, you can open a TCP socket on your server with `zmodload zsh/net/tcp; ztcp -l 25`, and check that you can connect to it from your machine with `zmodload zsh/net/tcp; ztcp your_server.com 25`. Otherwise, you can use netcat.
 - If you don't have it already, set up a website with Apache or Nginx, so you can get a free TLS certificate for it with Let's encrypt / certbot. It doesn't have to be the same domain as your email's sender domain.
 - Set your server's hostname to the domain with TLS. On GNU/Linux, you do this with `hostnamectl set-hostname $domain`.
 - From your VPS panel, set your server's IP address reverse DNS to the server's hostname. This is a must to get good deliverability.
