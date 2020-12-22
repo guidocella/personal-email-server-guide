@@ -21,6 +21,8 @@ sender_domain.xyz.	86400	IN	TXT	"v=spf1 mx -all"
 # "mail" is the selector which you can call whatever you want.
 mail._domainkey.sender_domain.xyz.	86400	IN	TXT	"v=DKIM1; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+Z7SeOjSgHwmxqimv196rejK1s/FCi0HJcbK5DZ7PgWPDASBKj11UPDEuogKeccPOw2flRHB7kwT+ILb2ffEqAj4vxOfbO1xMJtazTLAUfufoV7CQ6KyuQdafhK52JnRJFbgf7bsiPkq1WNkfQAmH3ygltw02OCdH2bD8N5AQD7T7O/8Jn8dB50cpx+6IX+YnGGnVd2AbpItIeEGV4U94WvOFiscrS27/j7ViSLHixkinfUkCrvZLTEfjdyGVQgiE9RfHHnLshtEbTlr9ZCRViyTgp7JYbX8fUDl0sKx7MbTWv/hrjbLUvSlXOb1YvXKJEy1L58kbO5XOejEBtLIRwIDAQAB"
 
-# Let know that emails from your domain
-# that fail SPF and/or DKIM should be rejected.
-_dmarc.sender_domain.xyz.	86400	IN	TXT	"v=DMARC1; p=reject"
+# DMARC tells server what do with emails from your domain
+# that fail SPF and/or DKIM. We won't set the reject policy
+# to avoid issues with mailing lists, but apparently even
+# setting a DMARC record without a policy improves deliverability.
+_dmarc.sender_domain.xyz.	86400	IN	TXT	"v=DMARC1; p=none"
