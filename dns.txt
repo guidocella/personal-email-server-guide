@@ -13,9 +13,7 @@ sender_domain.xyz.	86400	IN	TXT	"v=spf1 mx -all"
 
 # DKIM is a method to cryptographically sign your emails
 # to prove that they haven't been tampered with in transit.
-# If you install DKIMproxy on Debian, it automatically generates
-# a private and public key that you can use in /var/lib/dkimproxy.
-# Otherwise generate a private key on your mail server with
+# Generate a private key on your mail server with
 # openssl genrsa -out /etc/dkim_private.key
 # then output the public key in the format suitable for this DNS record with
 # openssl rsa -in /etc/dkim_private.key -pubout -outform der 2>/dev/null | openssl base64 -A
