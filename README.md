@@ -4,7 +4,7 @@ It uses OpenSMTPD, an email server by the OpenBSD developers that is way easier 
 
 This is meant to be the simplest possible setup for recieving email only for yourself when you have SSH access, in which you case you don't even need to learn Dovecot (the IMAP server) or mbsync, and can download new emails with rsync.
 
-This is tested on Debian 10 and should work anywhere with OpenSMTPD > 6.4 with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd` and the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`. On OpenBSD the filter executables go in `/usr/local/libexec/smtpd`, and on Arch in `/usr/lib/smtpd/opensmtpd`.
+This is tested on Debian and should work anywhere with OpenSMTPD > 6.4 with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd` and the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`. On OpenBSD the filter executables go in `/usr/local/libexec/smtpd`, and on Arch in `/usr/lib/smtpd/opensmtpd`.
 
 - Ensure that port 25 is open on your server, or you'll have to ask your VPS provider to open it. If you use zsh, you can open a TCP socket on your server with `zmodload zsh/net/tcp; ztcp -l 25`, and check that you can connect to it from your machine with `zmodload zsh/net/tcp; ztcp your_server.com 25`. Otherwise, you can use netcat.
 - If you don't have it already, set up a website with Apache or Nginx, so you can get a free TLS certificate for it with Let's encrypt / certbot. It doesn't have to be the same domain as your email's sender domain.
@@ -12,17 +12,9 @@ This is tested on Debian 10 and should work anywhere with OpenSMTPD > 6.4 with m
 - From your VPS panel, set your server's IP address reverse DNS to the server's hostname. This is a must to get good deliverability.
 - Read `dns.txt` to see how to set your DNS records.
 - To prevent cron from spamming you with local emails, append `>/dev/null 2>&1` to each cron job line, or switch to systemd timers.
-- OpenSMTPD is preinstalled on OpenBSD. If using latest Ubuntu or Arch, install it from their repositories. If using Debian 10, we'll enable the buster-backports repository to get a newer version of OpenSMTPD, since the configuration file changed in version 6.4 so it would be wasteful to learn the old syntax when it's already obsolete: `echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list && apt update && apt-get -t buster-backports --no-install-recommends install opensmtpd`
+- Install opensmtpd from your package manager, unless you're using OpenBSD where it is preinstalled.
 - You can choose from multiple software that do DKIM signing:<br>
-    - rspamd is a spam filtering daemon that can also do DKIM signing. Checking reverse DNS has been enough for me to avoid spam, without having to check if valid emails end up in a spam directory, so this guide only uses it for DKIM. Install it and the OpenSMTPD integration software filter-rspamd, which on Debian 10 you have to compile yourself with:
-    ```
-    apt install golang
-    git clone --depth=1 https://github.com/poolpOrg/filter-rspamd
-    cd filter-rspamd
-    go build
-    sudo install -m 0555 filter-rspamd /usr/libexec/opensmtpd/filter-rspamd
-    ```
-    Create a `/etc/rspamd/local.d/dkim_signing.conf` file with
+    - rspamd is a spam filtering daemon that can also do DKIM signing. Checking reverse DNS has been enough for me to avoid spam, without having to check if valid emails end up in a spam directory, so this guide only uses it for DKIM. Install it and the OpenSMTPD integration software opensmtpd-filter-rspamd, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
     ```
     allow_username_mismatch = true;
 
