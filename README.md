@@ -4,7 +4,7 @@ It uses OpenSMTPD, an email server by the OpenBSD developers that is way easier 
 
 This is meant to be the simplest possible setup for recieving email only for yourself when you have SSH access, in which you case you don't even need to learn Dovecot (the IMAP server) or mbsync, and can download new emails with rsync.
 
-This is tested on Debian and should work on other systems with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd` and the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`. On OpenBSD the filter executables go in `/usr/local/libexec/smtpd`, and on Arch in `/usr/lib/smtpd/opensmtpd`.
+This is tested on Debian and should work on other systems with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd` and the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`.
 
 - Ensure that port 25 is open on your server, or you'll have to ask your VPS provider to open it. If you use zsh, you can open a TCP socket on your server with `zmodload zsh/net/tcp; ztcp -l 25`, and check that you can connect to it from your machine with `zmodload zsh/net/tcp; ztcp your_server.com 25`. Otherwise, you can use netcat.
 - If you don't have it already, set up a website with Apache or Nginx, so you can get a free TLS certificate for it with Let's encrypt / certbot. It doesn't have to be the same domain as your email's sender domain.
