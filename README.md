@@ -32,7 +32,7 @@ This is tested on Debian and should work on other systems with minor modificatio
 - Ensure your configuration file doesn't have errors with `smtpd -n`.
 - Restart OpenSMTPD. On GNU/Linux, you do this with `systemctl restart opensmtpd`.
 - Send local mail with `sendmail foo@your_domain.xyz` and ensure that it gets saved to the configured maildir, if it doesn't check `/var/log/mail.err`.
-- Try downloading that email to your computer with `rsync -r --remove-source-files root@server_hostname.com:~mail/smtpd/new ~mail/$USER/INBOX`.
+- Try downloading that email to your computer with `rsync -r --remove-source-files root@<server_hostname.com>:~mail/smtpd/new ~mail/$USER/INBOX`.
 - Test your DNS records on https://appmaildev.com/en/dkim
 - Set up a cron job or systemd timer on your computer to download new emails with rsync. If you use the directory I mentioned above, your shell will notify when you have new email.
 
