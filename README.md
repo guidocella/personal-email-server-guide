@@ -62,6 +62,8 @@ Test your DNS records on https://appmaildev.com/en/dkim
 
 Set up a cron job or systemd timer on your computer to download new emails with rsync. If you use the directory I mentioned above, your shell will notify when you have new email.
 
+On Debian 12 OpenSMTPD 6.8 can't receive emails from most domains because it is incompatible with OpenSSL 3. This is fixed by installing OpenSMTPD 7.3 from unstable with apt pinning: http://jaqque.sbih.org/kplug/apt-pinning.html
+
 ## More guides
 
 - `man stmpd.conf`
