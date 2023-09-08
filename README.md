@@ -13,6 +13,14 @@ This is tested on Debian and should work on other systems with minor modificatio
 - Read `dns.txt` to see how to set your DNS records.
 - To prevent cron from spamming you with local emails, append `>/dev/null 2>&1` to each cron job line, or switch to systemd timers.
 - Install opensmtpd from your package manager, unless you're using OpenBSD where it is preinstalled.
+- Give the `opensmtpd` user permission to read Let's encrypt's certificates, for example with:
+```
+groupadd tls-cert -U opensmtpd
+chmod o+x /etc/letsencrypt/{live,archive}
+chgrp -R tls-cert /etc/letsencrypt/{live,archive}/<server_hostname.com>
+chmod g+r /etc/letsencrypt/archive/<server_hostname.com>/privkey*
+```
+You can find more details at https://www.unrealircd.org/docs/Setting_up_certbot_for_use_with_UnrealIRCd#Tweaking_permissions_on_the_key_file
 - You can choose from multiple software that do DKIM signing:<br>
     - rspamd is a spam filtering daemon that can also do DKIM signing. Checking reverse DNS has been enough for me to avoid spam, without having to check if valid emails end up in a spam directory, so this guide only uses it for DKIM. Install it and the OpenSMTPD integration software opensmtpd-filter-rspamd, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
     ```
