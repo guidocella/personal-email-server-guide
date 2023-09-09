@@ -38,7 +38,7 @@ You can choose from multiple software that do DKIM signing:
 allow_username_mismatch = true;
 
 domain {
-    sender_domain.xyz {
+    <sender_domain.xyz> {
         path = "/etc/dkim_private.key";
         selector = "mail";
     }
@@ -54,7 +54,7 @@ Ensure your configuration file doesn't have errors with `smtpd -n`.
 
 Restart OpenSMTPD. On GNU/Linux, you do this with `systemctl restart opensmtpd`.
 
-Send local mail with `sendmail foo@your_domain.xyz` and ensure that it gets saved to the configured maildir, if it doesn't check `/var/log/mail.err`.
+Send local mail with `sendmail foo@<your_domain.xyz>` and ensure that it gets saved to the configured maildir, if it doesn't check `/var/log/mail.err`.
 
 Try downloading that email to your computer with `rsync -r --remove-source-files root@<server_hostname.com>:~mail/smtpd/new ~mail/$USER/INBOX`.
 
