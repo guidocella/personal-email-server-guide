@@ -31,9 +31,10 @@ chmod g+r /etc/letsencrypt/archive/<server_hostname.com>/privkey*
 
 You can find more details at https://www.unrealircd.org/docs/Setting_up_certbot_for_use_with_UnrealIRCd#Tweaking_permissions_on_the_key_file
 
-You can do DKIM signing with rspamd or filter-dkimsign:
+You can do DKIM signing with filter-dkimsign or rspamd:
 
-- rspamd is a spam filtering daemon that can also do DKIM signing. Checking reverse DNS has been enough for me to avoid spam, without having to check if valid emails end up in a spam directory, so this guide only uses it for DKIM. Install it and the OpenSMTPD integration software opensmtpd-filter-rspamd, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
+- filter-dkimsign is simpler since it doesn't require a configuration file, being ran as a service or extra dependencies. Just install it (`opensmtpd-filter-dkimsign` on Debian) and later follow the example in `smtpd.conf`.
+- rspamd is a spam filtering daemon that can also do DKIM signing. If checking reverse DNS is enough for you to avoid spam, filter-dkimsign is easier to use. Otherwise to do DKIM signing with rspamd install it and the OpenSMTPD integration software `opensmtpd-filter-rspamd`, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
 ```
 allow_username_mismatch = true;
 
@@ -45,7 +46,6 @@ domain {
 }
 ```
 Then finally run `systemctl restart rspamd`.
-- filter-dkimsign is the simplest since it doesn't require a configuration file, being ran as a service or extra runtime dependencies, but I had problems with it crashing when replying to emails with the same message ID domain as the sender (i.e. when replying to yourself on mailing lists and Sourcehut tickets).
 
 Backup the original `/etc/smtpd.conf` if you want, then download this repo's `smtpd.conf` to `/etc/smtpd.conf`, read the comments and replace the example domains with yours.
 
