@@ -55,7 +55,7 @@ Restart OpenSMTPD. On GNU/Linux, you do this with `systemctl restart opensmtpd`.
 
 Send local mail with `sendmail foo@<your_domain.xyz>` and ensure that it gets saved to the configured maildir, if it doesn't check `/var/log/mail.err`.
 
-Try downloading that email to your computer with `rsync -r --remove-source-files root@<server_hostname.com>:~mail/smtpd/new ~mail/$USER/INBOX`.
+Try downloading that email to your computer with `rsync -rtz --remove-source-files root@<server_hostname.com>:~mail/smtpd/new ~mail/$USER/INBOX`.
 
 Test your DNS records on https://appmaildev.com/en/dkim
 
