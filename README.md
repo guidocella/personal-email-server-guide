@@ -33,8 +33,8 @@ You can find more details at https://www.unrealircd.org/docs/Setting_up_certbot_
 
 You can do DKIM signing with filter-dkimsign or rspamd:
 
-- filter-dkimsign is simpler since it doesn't require a configuration file, being ran as a service or extra dependencies. Just install it (`opensmtpd-filter-dkimsign` on Debian), ensure `/etc/dkim_private.key` can be read by all users or at least by `_dkimsign`, and later follow the example in `smtpd.conf`.
-- rspamd is a spam filtering daemon that can also do DKIM signing. If checking reverse DNS is enough for you to avoid spam, filter-dkimsign is easier to use. Otherwise to do DKIM signing with rspamd install it and the OpenSMTPD integration software `opensmtpd-filter-rspamd`, ensure `/etc/dkim_private.key` can be read by all users or at least by `_rspamd`, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
+- filter-dkimsign is simpler since it doesn't require a configuration file, being ran as a service or extra dependencies. Just install it (`opensmtpd-filter-dkimsign` on Debian), ensure `/etc/dkim_private.key` can be read by the `opensmtpd` user, and later follow the example in `smtpd.conf`.
+- rspamd is a spam filtering daemon that can also do DKIM signing. If checking reverse DNS is enough for you to avoid spam, filter-dkimsign is easier to use. Otherwise to do DKIM signing with rspamd install it and the OpenSMTPD integration software `opensmtpd-filter-rspamd`, ensure `/etc/dkim_private.key` can be read by the `_rspamd` user, then create a `/etc/rspamd/local.d/dkim_signing.conf` file with
 ```
 allow_username_mismatch = true;
 
