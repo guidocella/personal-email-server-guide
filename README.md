@@ -2,7 +2,7 @@ This is an example configuration to run your own email server.
 
 It uses OpenSMTPD, an email server by the OpenBSD developers that is way easier to use than Postfix - you can get it to work with only 10 lines of configuration.
 
-This is meant to be the simplest possible setup for recieving email only for yourself when you have SSH access, in which you case you don't even need to learn Dovecot (the IMAP server) or mbsync, and can download new emails with rsync.
+This is meant to be the simplest possible setup for receiving email only for yourself when you have SSH access, in which you case you don't even need to learn Dovecot (the IMAP server) or mbsync, and can download new emails with rsync.
 
 This is tested on Debian and should work on other systems with minor modifications. In particular, if your server doesn't run a Debian-based distro, the service and user are called `smtpd` instead of `opensmtpd` and the config file is `/etc/smtpd/smtpd.conf` instead of `/etc/smtpd.conf`.
 
